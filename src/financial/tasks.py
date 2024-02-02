@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.db import transaction
 
-from financial.models import Transaction, StatusChoices, Wallet
+from financial.models import Transaction, Wallet
 
 
 @shared_task
