@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Loading environment variables
-load_dotenv(BASE_DIR/".env")
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     # Local
     "user",
-    "financial"
+    "financial",
 ]
 
 MIDDLEWARE = [
