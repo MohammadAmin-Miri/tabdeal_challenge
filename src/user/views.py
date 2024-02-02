@@ -9,4 +9,4 @@ class ChargeAPIView(generics.CreateAPIView):
     serializer_class = PhoneChargeSerializer
 
     def perform_create(self, serializer):
-        serializer.save(seller=self.request.user.seller.id)
+        serializer.save(seller=self.request.user.seller)
