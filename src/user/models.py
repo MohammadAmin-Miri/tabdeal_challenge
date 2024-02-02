@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.core.validators import RegexValidator
 
 from financial.models import Transaction
 
@@ -38,7 +39,15 @@ class PhoneCharge(models.Model):
         Transaction, on_delete=models.CASCADE, related_name="charge"
     )
     amount = models.PositiveBigIntegerField(default=0)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex=r"^(\+98|0)?9\d{9}$",
+                message="Enter a valid phone number.",
+            ),
+        ],
+    )
     status = models.CharField(
         max_length=16, choices=StatusChoices, default=StatusChoices.PENDING
     )
