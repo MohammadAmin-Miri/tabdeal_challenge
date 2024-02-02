@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
@@ -35,6 +36,7 @@ class PhoneCharge(models.Model):
         PENDING = "pending", _("Pending")
 
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="charges")
+    tracking_code = models.UUIDField(default=uuid.uuid4, editable=False)
     transaction = models.OneToOneField(
         Transaction, on_delete=models.CASCADE, related_name="charge"
     )
