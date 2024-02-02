@@ -17,6 +17,7 @@ class PhoneChargeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "seller",
+        "phone",
         "status",
         "amount",
         "status",
