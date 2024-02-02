@@ -1,22 +1,19 @@
 import uuid
 from rest_framework import serializers
 
+from financial.models import Transaction
 from financial.tasks import create_transaction
 
 
-class IncreaseCreditSerializer(serializers.Serializer):
-    tracking_code = serializers.UUIDField()
-    amount = serializers.IntegerField(write_only=True)
+class IncreaseCreditSerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = Transaction
         fields = ("tracking_code", "amount")
         read_only_fields = ("tracking_code",)
+        extra_kwargs = {"amount": {"write_only": True}}
 
     def create(self, validated_data):
-        tracking_code = uuid.uuid4()
-        create_transaction.delay(
-            str(tracking_code),
-            validated_data.get("amount"),
-            validated_data.get("wallet"),
-        )
-        return {"tracking_code": tracking_code}
+        transaction = super().create(validated_data)
+        create_transaction.delay(transaction.id)
+        return transaction

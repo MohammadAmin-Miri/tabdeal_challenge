@@ -6,14 +6,8 @@ from financial.models import Transaction, Wallet
 
 @shared_task
 @transaction.atomic
-def create_transaction(tracking_code: str, amount: int, wallet_id: int):
-    wallet = Wallet.objects.get(id=wallet_id)
-    Transaction.objects.create(
-        wallet=wallet,
-        amount=amount,
-        tracking_code=tracking_code,
-        status=Transaction.StatusChoices.SUCCESS,
-        action=Transaction.ActionChoices.INCREASE,
-    )
-    wallet.credit += amount
+def create_transaction(transaction_id: int):
+    transaction = Transaction.objects.get(id=transaction_id)
+    wallet = transaction.wallet
+    wallet.credit += transaction.amount
     wallet.save()

@@ -9,4 +9,4 @@ class IncreaseWalletCreditAPIView(generics.CreateAPIView):
     serializer_class = IncreaseCreditSerializer
 
     def perform_create(self, serializer):
-        serializer.save(wallet=self.request.user.wallet.id)
+        serializer.save(wallet=self.request.user.wallet)
