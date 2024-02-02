@@ -12,7 +12,7 @@ class WalletAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_filter = (
         "action",
-        "result",
+        "status",
     )
     list_display = (
         "id",
@@ -20,5 +20,5 @@ class TransactionAdmin(admin.ModelAdmin):
         "tracking_code",
         "amount",
         "action",
-        "result",
+        "status",
     )

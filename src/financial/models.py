@@ -32,7 +32,7 @@ class Transaction(models.Model):
         INCREASE = "increase", _("Increase")
         DECREASE = "decrease", _("Decrease")
 
-    class ResultChoices(models.TextChoices):
+    class StatusChoices(models.TextChoices):
         SUCCESS = "success", _("Success")
         FAILURE = "failure", _("Failure")
         PENDING = "pending", _("Pending")
@@ -44,8 +44,8 @@ class Transaction(models.Model):
     action = models.CharField(
         max_length=16, choices=ActionChoices, default=ActionChoices.INCREASE
     )
-    result = models.CharField(
-        max_length=16, choices=ResultChoices, default=ResultChoices.PENDING
+    status = models.CharField(
+        max_length=16, choices=StatusChoices, default=StatusChoices.PENDING
     )
     amount = models.PositiveBigIntegerField(default=0)
     date_created = models.DateTimeField(auto_now_add=True)
