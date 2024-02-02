@@ -9,7 +9,7 @@ class WalletAdmin(admin.ModelAdmin):
 
 
 @admin.register(Transaction)
-class WalletAdmin(admin.ModelAdmin):
+class TransactionAdmin(admin.ModelAdmin):
     list_filter = (
         "action",
         "result",
