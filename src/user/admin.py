@@ -20,5 +20,4 @@ class PhoneChargeAdmin(admin.ModelAdmin):
         "phone",
         "status",
         "amount",
-        "status",
     )
