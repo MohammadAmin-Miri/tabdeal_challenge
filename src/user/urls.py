@@ -4,5 +4,5 @@ from user.views import ChargeAPIView
 
 
 urlpatterns = [
-    path("charge/", ChargeAPIView.as_view(), name="charge-phone")
+    path("charge/", ChargeAPIView.as_view(), name="charge-phone"),
 ]
