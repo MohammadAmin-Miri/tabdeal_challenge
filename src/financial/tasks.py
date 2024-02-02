@@ -9,7 +9,7 @@ from financial.models import Transaction, Wallet
 def create_transaction(tracking_code: str, amount: int, wallet_id: int):
     wallet = Wallet.objects.get(id=wallet_id)
     Transaction.objects.create(
-        wallet_id=wallet,
+        wallet=wallet,
         amount=amount,
         tracking_code=tracking_code,
         status=Transaction.StatusChoices.SUCCESS,
