@@ -7,19 +7,20 @@ from .models import PhoneCharge, Seller
 
 @shared_task
 @transaction.atomic
-def create_phone_charge(charge_id: int):
-    charge = PhoneCharge.objects.get(id=charge_id)
+def create_phone_charge(charge_id: int, amount: int, tracking_code: str):
+    charge = PhoneCharge.objects.select_for_update().get(id=charge_id)
     wallet = charge.seller.user.wallet
-    if charge.amount > wallet.credit:
+    if amount > wallet.credit:
         return
 
-    Transaction.objects.create(
+    transaction = Transaction.objects.select_for_update().create(
         wallet=wallet,
         action=Transaction.ActionChoices.DECREASE,
         status=Transaction.StatusChoices.SUCCESS,
-        amount=charge.amount,
+        amount=amount,
+        tracking_code=tracking_code,
     )
-    charge.status = PhoneCharge.StatusChoices.SUCCESS
+    charge.transaction = transaction
     charge.save()
-    wallet.credit -= charge.amount
+    wallet.credit -= amount
     wallet.save()
