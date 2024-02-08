@@ -64,3 +64,6 @@ class Transaction(models.Model):
                 ]
             ),
         ]
+
+    def __str__(self) -> str:
+        return str(self.tracking_code)
