@@ -13,11 +13,12 @@ class SellerAdmin(admin.ModelAdmin):
 
 @admin.register(PhoneCharge)
 class PhoneChargeAdmin(admin.ModelAdmin):
-    list_filter = ("seller", "status", "phone")
+    list_filter = ("seller", "phone")
     list_display = (
         "id",
         "seller",
         "phone",
-        "status",
+        "transaction",
         "amount",
+        "status",
     )
