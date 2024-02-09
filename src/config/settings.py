@@ -14,6 +14,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -138,6 +139,12 @@ CACHES = {
 # Celery Config
 CELERY_BROKER_URL = redis_address
 CELERY_RESULT_BACKEND = redis_address
+CELERY_BEAT_SCHEDULE = {
+    "set_failed_charge": {
+        "task": "user.tasks.set_failed_charge",
+        "schedule": crontab(hour="0"),
+    },
+}
 
 
 # Password validation
