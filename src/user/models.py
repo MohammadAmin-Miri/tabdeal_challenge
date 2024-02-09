@@ -31,6 +31,7 @@ class Seller(models.Model):
 class PhoneCharge(models.Model):
 
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="charges")
+    tracking_code = models.UUIDField(default=uuid.uuid4, editable=False)
     transaction = models.OneToOneField(
         Transaction,
         on_delete=models.CASCADE,
