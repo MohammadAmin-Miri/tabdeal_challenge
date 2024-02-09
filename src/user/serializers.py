@@ -6,7 +6,6 @@ from user.tasks import create_phone_charge
 
 
 class PhoneChargeSerializer(serializers.ModelSerializer):
-    amount = serializers.IntegerField(write_only=True, min_value=0)
 
     class Meta:
         model = PhoneCharge
@@ -14,10 +13,12 @@ class PhoneChargeSerializer(serializers.ModelSerializer):
         read_only_fields = ("tracking_code",)
         extra_kwargs = {
             "phone": {"write_only": True},
+            "amount": {"write_only": True},
         }
 
     def create(self, validated_data):
-        amount = validated_data.pop("amount")
         phone_charge = super().create(validated_data)
-        create_phone_charge.delay(phone_charge.id, amount, phone_charge.tracking_code)
+        create_phone_charge.delay(
+            phone_charge.id, phone_charge.amount, phone_charge.tracking_code
+        )
         return {"tracking_code": phone_charge.tracking_code}
