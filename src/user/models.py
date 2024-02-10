@@ -67,12 +67,6 @@ class PhoneCharge(models.Model):
         ]
 
     @property
-    def amount(self):
-        if self.transaction:
-            return self.transaction.amount
-        return None
-
-    @property
     def status(self):
         if self.transaction:
             return self.transaction.status
