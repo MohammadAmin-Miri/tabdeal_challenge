@@ -2,24 +2,18 @@ from datetime import timedelta
 from celery import shared_task
 from django.db import OperationalError, transaction
 
-from financial.models import Transaction
-from .models import PhoneCharge, Seller
+from financial.models import Transaction, Wallet
+from .models import PhoneCharge
 
 
-@shared_task(
-    bind=True,
-    autoretry_for=(OperationalError,),
-    retry_backoff=True,
-    retry_kwargs={"max_retries": 20},
-)
+@shared_task
 @transaction.atomic
 def create_phone_charge(charge_id: int, amount: int, tracking_code: str):
-    charge = PhoneCharge.objects.select_for_update().get(id=charge_id)
-    wallet = charge.seller.user.wallet
+    charge = PhoneCharge.objects.get(id=charge_id)
+    wallet = Wallet.objects.select_for_update().get(user=charge.seller.user)
     if amount > wallet.credit:
         return
-
-    transaction = Transaction.objects.select_for_update().create(
+    transaction = Transaction.objects.create(
         wallet=wallet,
         action=Transaction.ActionChoices.DECREASE,
         status=Transaction.StatusChoices.SUCCESS,
