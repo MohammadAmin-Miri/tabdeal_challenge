@@ -1,10 +1,15 @@
 from celery import shared_task
-from django.db import transaction
+from django.db import OperationalError, transaction
 
 from financial.models import Transaction, Wallet
 
 
-@shared_task
+@shared_task(
+    bind=True,
+    autoretry_for=(OperationalError,),
+    retry_backoff=True,
+    retry_kwargs={"max_retries": 20},
+)
 @transaction.atomic
 def create_transaction(transaction_id: int):
     transaction = Transaction.objects.select_for_update().get(id=transaction_id)
